@@ -1,0 +1,11 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+<h1>Delete Rack Area</h1>
+<p>Are you sure you want to delete this rack area?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'plugins:netbox_layout_patch:rackarea_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

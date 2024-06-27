@@ -1,0 +1,37 @@
+<div class="card panel">
+   
+        <h5 class="card-header">Rack Areas</h3>
+    
+    <div class="card-body table-responsive">
+        {% if rack_areas %}
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Location</th>
+                        <th>Top %</th>
+                        <th>Left %</th>
+                        <th>Width %</th>
+                        <th>Height %</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rack_area in rack_areas %}
+                        <tr>
+                            <td>{{ rack_area.id }}</td>
+                            <td><a href="{% url 'dcim:location' rack_area.rack.location.id %}">{{ rack_area.rack.location }}</a></td>
+                            <td>{{ rack_area.top }}</td>
+                            <td>{{ rack_area.left }}</td>
+                            <td>{{ rack_area.width }}</td>
+                            <td>{{ rack_area.height }}</td>
+                            <td><a href="{% url 'plugins:netbox_layout_patch:edit_rack_area' rack_area.id %}">Edit</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No rack areas associated with this rack.</p>
+        {% endif %}
+    </div>
+</div>
