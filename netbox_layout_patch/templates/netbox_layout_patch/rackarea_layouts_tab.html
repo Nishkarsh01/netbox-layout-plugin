@@ -1,0 +1,63 @@
+<div class="card col col-md-6">
+    {% block head %}
+    <style>
+        #layout, .card {
+            margin: 0 auto;
+            position: relative;
+            width: 100%;
+            height: fit-content;
+        }
+        .layout-img {
+            filter: invert(0);
+            width: 100%;
+            height: auto;
+        }
+        body[data-bs-theme=dark] .layout-img {
+            filter: invert(1);
+        }
+        .layout-area {
+            position: absolute;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+            background-color: rgba(66, 133, 244, 0.15);
+        }
+        .layout-area:hover {
+            box-shadow: 0 0 4px 4px rgba(66, 133, 244, 0.3), 0 1px 3px 1px rgba(66, 133, 244, 0.3);
+            background-color: rgba(66, 133, 244, 0.3);
+        }
+    </style>
+    {% endblock %}
+
+    {% with images=object.images.all %}
+        {% if images.exists %}
+            <div class="card">
+                <h5 class="card-header">Layout</h5>
+                <div class="card-body table-responsive">
+                    <div id="layout">
+                        <!-- Loop through images and display those with "Layout" in their name -->
+                        {% for attachment in images %}
+                            {% if "Layout" in attachment.name %}
+                                <img class="layout-img" src="{{ attachment.image.url }}" alt="{{ attachment.name }}">
+                            {% endif %}
+                        {% endfor %}
+
+                        <!-- Loop through layout areas and create clickable areas on the layout image -->
+                        {% if layout_areas %}
+                            {% for area in layout_areas %}
+                                <a href="{% url 'dcim:rack' area.pk %}"
+                                   class="layout-area"
+                                   style="left: {{ area.left }}%; top: {{ area.top }}%; width: {{ area.width }}%; height: {{ area.height }}%;"></a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <h5 class="card-header">Layout</h5>
+                <div class="card-body">
+                    <p>No layout images available.</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
