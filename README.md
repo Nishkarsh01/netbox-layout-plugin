@@ -29,7 +29,7 @@ To install the NetBox Layout Plugin, follow these steps:
     Add the plugin to your NetBox configuration file (`configuration.py`):
     ```python
     PLUGINS = [
-        'netbox_layout_plugin',
+        'netbox_layout_patch',
     ]
     ```
 
