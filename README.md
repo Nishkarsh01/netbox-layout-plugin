@@ -16,7 +16,7 @@ To install the NetBox Layout Plugin, follow these steps:
 
 1. **Clone the Repository**:
     ```sh
-    git clone http://stash/scm/dvg/netbox.git
+    clone the repo
     cd netbox-layout-plugin
     ```
 
