@@ -1,0 +1,84 @@
+{% extends 'generic/object_edit.html' %}
+{% load static %}
+
+{% block content %}
+  {{ block.super }}
+  <hr>
+  <!-- Centered Preview Button -->
+  <div class="text-center">
+    <button type="button" id="preview-button" class="btn btn-primary">Preview</button>
+  </div>
+
+  <!-- Centered Preview Container -->
+  <div class="card col col-md-6 mx-auto mt-4" id="preview-container" style="display: none;">
+    <h5 class="card-header">Layout Preview</h5>
+    <div class="card-body table-responsive">
+      <div id="layout">
+        <img id="layout-img" class="layout-img" src="" alt="Layout Image" style="display: none;">
+        <a href="#" class="layout-area" id="preview-area" style="display: none;"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Styling -->
+  <style>
+    #layout, .card { margin: 0 auto; position: relative; width: 60%; height: fit-content; }
+    .layout-img { filter: invert(0); width: 100%; height: auto; }
+    body[data-bs-theme=dark] .layout-img { filter: invert(1); }
+    .layout-area { position: absolute; transition: background-color 0.3s, box-shadow 0.3s, color 0.3s; background-color: rgba(66, 133, 244, 0.15); }
+    .layout-area:hover { box-shadow: 0 0 4px 4px rgba(66, 133, 244, 0.3), 0 1px 3px 1px rgba(66, 133, 244, 0.3); background-color: rgba(66, 133, 244, 0.3); }
+  </style>
+
+  <!-- JavaScript for handling the preview functionality -->
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to update the preview area
+      function updatePreview() {
+        const top = parseFloat(document.getElementById('id_top').value) || 0,
+              left = parseFloat(document.getElementById('id_left').value) || 0,
+              width = parseFloat(document.getElementById('id_width').value) || 0,
+              height = parseFloat(document.getElementById('id_height').value) || 0,
+              locationId = document.getElementById('id_location').value;
+
+        // Validate input values
+        if (top < 0 || top > 100 || left < 0 || left > 100 || width < 0 || width > 100 || height < 0 || height > 100) {
+          alert('Please ensure all values are between 0 and 100.');
+          return;
+        }
+
+        // Elements for preview
+        const previewArea = document.getElementById('preview-area'),
+              previewContainer = document.getElementById('preview-container'),
+              layoutImg = document.getElementById('layout-img'),
+              url = "{% url 'plugins:netbox_layout_patch:get_location_image' 0 %}".replace('0', locationId);
+
+        // Set styles for the preview area
+        previewArea.style.cssText = `top:${top}%;left:${left}%;width:${width}%;height:${height}%;display:block;`;
+        previewContainer.style.display = 'block';
+
+        // Fetch the image URL for the selected location
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            if (data.image_url) {
+              // Display the fetched image
+              layoutImg.src = data.image_url;
+              layoutImg.style.display = 'block';
+            } else {
+              // Alert if no image is found
+              alert(data.error || 'No image found for the selected location.');
+            }
+          })
+          .catch(() => alert('Error fetching image.'));
+      }
+
+      // Event listener for the preview button
+      document.getElementById('preview-button').addEventListener('click', updatePreview);
+
+      // Event listeners for keyboard input on the form fields
+      ['id_top', 'id_left', 'id_width', 'id_height'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updatePreview);
+      });
+    });
+  </script>
+{% endblock %}

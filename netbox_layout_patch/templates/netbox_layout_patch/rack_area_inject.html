@@ -1,9 +1,9 @@
 <div class="card panel">
-   
-        <h5 class="card-header">Rack Areas</h3>
-    
+    <!-- Card Header -->
+    <h5 class="card-header">Rack Areas</h5>
     <div class="card-body table-responsive">
         {% if rack_areas %}
+            <!-- Table for displaying rack areas -->
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -17,6 +17,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Loop through each rack area and create a table row -->
                     {% for rack_area in rack_areas %}
                         <tr>
                             <td>{{ rack_area.id }}</td>
@@ -25,12 +26,13 @@
                             <td>{{ rack_area.left }}</td>
                             <td>{{ rack_area.width }}</td>
                             <td>{{ rack_area.height }}</td>
-                            <td><a href="{% url 'plugins:netbox_layout_patch:edit_rack_area' rack_area.id %}">Edit</a></td>
+                            <td><a href="{% url 'plugins:netbox_layout_patch:rackarea_edit' rack_area.id %}">Edit</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% else %}
+            <!-- Message when no rack areas are associated with this rack -->
             <p>No rack areas associated with this rack.</p>
         {% endif %}
     </div>
