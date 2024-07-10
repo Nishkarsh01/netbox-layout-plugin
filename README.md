@@ -22,7 +22,7 @@ To install the NetBox Layout Plugin, follow these steps:
 
 2. **Install the Plugin**:
     ```sh
-    python setup.py install
+    python setup.py devlop
     ```
 
 3. **Update NetBox Configuration**:
