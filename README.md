@@ -35,7 +35,7 @@ To install the NetBox Layout Plugin, follow these steps:
 
 4. **Run Database Migrations**:
     ```sh
-    python manage.py migrate
+    python manage.py migrate netbox_layout_patch
     ```
 
 5. **Restart NetBox**:
